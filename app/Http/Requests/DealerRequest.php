@@ -33,7 +33,7 @@ class DealerRequest extends FormRequest
 
         ];
     }
-    public function message(){
+    public function messages(){
         return [
             'name.required'=>'Không được để trống tên đại lý',
             'code.required'=>'Không được để trống mã đại lý',
