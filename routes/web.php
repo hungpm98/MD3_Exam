@@ -22,6 +22,10 @@ Route::prefix('dealers')->group(function(){
     Route::get('index',[DealerController::class,'index'])->name('dealers.index');
     Route::get('create',[DealerController::class,'create'])->name('dealers.showFormCreate');
     Route::post('create',[DealerController::class,'store'])->name('dealers.create');
-    Route::get('update',[DealerController::class,'index'])->name('dealers.index');
-    Route::get('update',[DealerController::class,'index'])->name('dealers.index');
+    Route::get('{id}/update',[DealerController::class,'edit'])->name('dealers.showFormUpdate');
+    Route::post('{id}/update',[DealerController::class,'update'])->name('dealers.update');
+    Route::get('{id}/delete',[DealerController::class,'destroy'])->name('dealers.delete');
+    Route::get('/search/',[DealerController::class,'search'])->name('dealers.search');
 });
+
+

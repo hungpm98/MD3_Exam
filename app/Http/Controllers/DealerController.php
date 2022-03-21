@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DealerRequest;
 use App\Repositories\DealerRepository;
+use App\Repositories\StatusRepository;
 use Illuminate\Http\Request;
 
 class DealerController extends Controller
 {
     public $dealerRepository;
+    public $statusRepository;
 
-    public function __construct(DealerRepository $dealerRepository)
+    public function __construct(DealerRepository $dealerRepository,
+                                StatusRepository $statusRepository
+
+    )
     {
         $this->dealerRepository = $dealerRepository;
+        $this->statusRepository = $statusRepository;
     }
 
     public function index()
@@ -24,12 +31,14 @@ class DealerController extends Controller
 
     public function create()
     {
-        return view('dealers.create');
+        $status = $this->statusRepository->getAll();
+        return view('dealers.create',compact('status'));
     }
 
 
-    public function store(Request $request)
+    public function store(DealerRequest $request)
     {
+
         $this->dealerRepository->create($request);
         return redirect()->route('dealers.index');
 
@@ -45,8 +54,9 @@ class DealerController extends Controller
 
     public function edit($id)
     {
-        $delaers = $this->dealerRepository->getById($id);
-        return view('dealers.update',compact('dealers'));
+        $dealers = $this->dealerRepository->getById($id);
+        $status = $this->statusRepository->getAll();
+        return view('dealers.update',compact('dealers','status'));
     }
 
     public function update(Request $request,$id){
@@ -59,5 +69,10 @@ class DealerController extends Controller
     {
         $this->dealerRepository->deleteById($id);
         return redirect()->route('dealers.index');
+    }
+    public function search(Request $request){
+      $dealers =  $this->dealerRepository->search($request);
+        return view('dealers.index',compact('dealers'));
+
     }
 }
